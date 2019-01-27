@@ -1,4 +1,14 @@
 import hashlib
+import fileinput
+import sys
+
+tac = ""
+
+def replace(file,searchExp,replaceExp):
+    for line in fileinput.input(file, inplace=1):
+        if searchExp in line:
+            line = line.replace(searchExp,replaceExp)
+        sys.stdout.write(line)
 
 def encoder(password):
     password1 = hashlib.md5(password.encode())
@@ -27,20 +37,14 @@ def login():
                 f.write(str({user: password}) + " " + secret + "\n")
                 print("Your secret has been saved!!!")
                 f.close()
-            def secret_change():
-                secret = input("Enter your new secret: ")
-                f = open("Password.txt", "r")
+            def secret_read():
+                f = open("Password.txt","r")
                 lines = f.readlines()
-                f.close()
-                f = open("Password.txt", "w")
                 for line in lines:
-                    if line != str({user: password}) + "\n":
-                        f.write(line)
-                f.write(str({user: password}) + " " + secret + "\n")
-                print("Your new secret has been saved!!!")
-                f.close()
-            secret_create()
-            secret_change()
+                    if str({user: password}) in line:
+                        tac = line
+                tac = tac.split()
+                print("Your secret is",tac[2])
             break
         else:
             print("Invalid Username or Password!!!")
@@ -68,15 +72,7 @@ def pass_changer():
     if str({user:pass_old}) in open("Password.txt").read():
         pass_new = input("Enter your new password: ")
         pass_new = encoder(pass_new)
-        f = open("Password.txt","r")
-        lines = f.readlines()
-        f.close()
-        f = open("Password.txt","w")
-        for line in lines:
-            if line != str({user:pass_old})+"\n":
-                f.write(line)
-        f.write(str({user: pass_new}))
-        f.close()
+        replace("Password.txt",str({user:pass_old}),str({user:pass_new}))
         print("Your password has been successfully changed")
     else:
         print("Invalid username or password")
@@ -95,6 +91,36 @@ def pass_reader():
         print("Credentials Not Found!!!")
 
 attempted_password = ""
+
+def brute_login(user,password):
+    count = 0
+    while count < 3:
+        user_pass_dictionary = srt({user: password})
+        if user_pass_dictionary in open("Password.txt").read():
+            print()
+            print("You are logged in now!!!")
+            def secret_create():
+                secret = input("Enter your secret: ")
+                f = open("Password.txt", "r")
+                lines = f.readlines()
+                f.close()
+                f = open("Password.txt", "w")
+                for line in lines:
+                    if line != str({user: password}) + "\n":
+                        f.write(line)
+                f.write(str({user: password}) + " " + secret + "\n")
+                print("Your secret has been saved!!!")
+                f.close()
+            def secret_read():
+                f = open("Password.txt","r")
+                lines = f.readlines()
+                for line in lines:
+                    if str({user: password}) in line:
+                        tac = line
+                tac = tac.split()
+                print("Your secret is",tac[2])
+            break
+    secret_read()
 
 def brute():
     cc = 0
@@ -123,6 +149,7 @@ def brute():
             if password in open("Password.txt").read():
                 print()
                 print("You have successfully Bruteforced into the account")
+                brute_login(user,password)
             else:
                 print("Bruteforce failed...")
             cc += 1
@@ -153,5 +180,5 @@ def main():
     else:
         pass
 
+brute()
 
-login()
