@@ -95,7 +95,7 @@ attempted_password = ""
 def brute_login(user,password):
     count = 0
     while count < 3:
-        user_pass_dictionary = srt({user: password})
+        user_pass_dictionary = str({user: password})
         if user_pass_dictionary in open("Password.txt").read():
             print()
             print("You are logged in now!!!")
@@ -131,9 +131,9 @@ def brute():
             for entry in list_of_chars:
                 if character == entry:
                     attempted_password += character
-                    print(attempted_password)
                     continue
         return attempted_password
+        print(attempted_password)
 
     print("Enter the username to Bruteforce")
     user = input("> ")
@@ -179,6 +179,5 @@ def main():
         brute()
     else:
         pass
-
-brute()
+main()
 
