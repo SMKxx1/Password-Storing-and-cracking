@@ -5,11 +5,7 @@ import os
 import time
 import Art
 import getpass
-
 clear = lambda: os.system('cls')
-
-tac = ""
-
 
 def replace(file, searchexp, replaceexp):
     for line in fileinput.input(file, inplace=1):
@@ -17,12 +13,10 @@ def replace(file, searchexp, replaceexp):
             line = line.replace(searchexp, replaceexp)
         sys.stdout.write(line)
 
-
 def encoder(password):
     password1 = hashlib.md5(password.encode())
     password = password1.hexdigest()
     return password
-
 
 def secret_create(user, password):
     secret = input("Enter your secret: ")
@@ -65,7 +59,6 @@ def secret_read(user, password):
         clear()
     else:
         pass
-
 
 def login2(user, password):
     print('''What do you want to do??
@@ -113,7 +106,6 @@ def login():
                 Art.ext("Too many attempts",".")
                 break
 
-
 def pass_creator():
     user = input("Enter your username: ")
     if "{'" + str(user) + "':" in open("Password.txt").read():
@@ -136,7 +128,6 @@ def pass_creator():
             Art.ext("Passwords don't match",".")
             main()
 
-
 def pass_changer(user,password):
     pass_old = getpass.getpass("Enter your old password: ",stream=None)
     pass_old = encoder(pass_old)
@@ -154,7 +145,6 @@ def pass_changer(user,password):
         Art.ext("Invalid username or password",".")
         login2(user,password)
 
-
 def pass_reader():
     user_name = input("Enter the username: ")
     password = input("Enter the password: ")
@@ -165,7 +155,6 @@ def pass_reader():
         print("Credentials Found!!!")
     else:
         print("Credentials Not Found!!!")
-
 
 attempted_password = ""
 
