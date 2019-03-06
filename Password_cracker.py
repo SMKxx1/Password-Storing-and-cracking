@@ -5,6 +5,7 @@ import os
 import time
 import Art
 import getpass
+
 clear = lambda: os.system('cls')
 
 def replace(file, searchexp, replaceexp):
@@ -233,6 +234,8 @@ def brute():
     if cc == 0:
         print(cc)
         print("No user found...")
+        input()
+        main()
     else:
         pass
 
